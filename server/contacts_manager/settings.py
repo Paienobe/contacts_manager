@@ -86,6 +86,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = "user_accounts.User"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
