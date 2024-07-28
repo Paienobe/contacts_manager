@@ -1,5 +1,5 @@
 from rest_framework.generics import GenericAPIView
-from .serializers import UserRegisterSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User
@@ -15,7 +15,7 @@ class RegisterUserView(GenericAPIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             user = serializer.data
-            user_instance = User.objects.get(id=serializer.data.get("id"))
+            user_instance = User.objects.get(id=user.get("id"))
             user_token = user_instance.tokens()
         return Response({
             "user": user,
@@ -23,3 +23,13 @@ class RegisterUserView(GenericAPIView):
             "refresh_token": user_token.get("refresh"),
             "access_token": user_token.get("access"),
         }, status=status.HTTP_201_CREATED)
+
+
+class LoginUserView(GenericAPIView):
+    serializer_class = UserLoginSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(
+            data=request.data, context={"request": request})
+        if (serializer.is_valid(raise_exception=True)):
+            return Response(serializer.data, status=status.HTTP_200_OK)
