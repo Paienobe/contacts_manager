@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class RegisterUserView(GenericAPIView):
+    permission_classes = []
     serializer_class = UserRegisterSerializer
 
     def post(self, request):
@@ -21,12 +22,13 @@ class RegisterUserView(GenericAPIView):
         return Response({
             "user": user,
             "msg": f"Welcome {user["first_name"]}. Thanks for signing up.",
-            "refresh_token": user_token.get("refresh"),
             "access_token": user_token.get("access"),
+            "refresh_token": user_token.get("refresh"),
         }, status=status.HTTP_201_CREATED)
 
 
 class LoginUserView(GenericAPIView):
+    permission_classes = []
     serializer_class = UserLoginSerializer
 
     def post(self, request):
