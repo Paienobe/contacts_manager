@@ -1,12 +1,12 @@
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework import generics
 from .serializers import ContactSerializer
 from .models import Contact
-from rest_framework.response import Response
+
 
 # Create your views here.
 
 
-class CreateContactView(CreateAPIView):
+class CreateContactView(generics.CreateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
 
@@ -15,6 +15,16 @@ class CreateContactView(CreateAPIView):
         serializer.save(created_by=user)
 
 
-class ListContactsView(ListAPIView):
+class ListContactsView(generics.ListAPIView):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
+
+
+class EditContactView(generics.UpdateAPIView):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
+
+
+class DeleteContactView(generics.DestroyAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
