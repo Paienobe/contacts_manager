@@ -21,6 +21,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "email", "first_name",
                   "last_name", "password", "password2"]
+        read_only_fields = ["id"]
 
     def validate(self, attrs):
         password = attrs.get("password")
@@ -58,8 +59,8 @@ class UserLoginSerializer(serializers.Serializer):
         user_token = user.tokens()
         return {
             "user": user,
-            "refresh_token": user_token.get("refresh"),
             "access_token": user_token.get("access"),
+            "refresh_token": user_token.get("refresh"),
         }
 
 
