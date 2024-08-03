@@ -6,6 +6,7 @@ type InputProps = {
   changeFunc: (value: any) => void;
   className?: string;
   placeHolder: string;
+  required?: boolean;
 };
 
 const Input = ({
@@ -14,6 +15,7 @@ const Input = ({
   changeFunc,
   className,
   placeHolder,
+  required = false,
 }: InputProps) => {
   return (
     <input
@@ -22,6 +24,7 @@ const Input = ({
       value={value}
       onChange={changeFunc}
       placeholder={placeHolder}
+      required={required}
     />
   );
 };

@@ -1,28 +1,27 @@
 "use client";
 import Input from "@/app/components/Input/Input";
-import { preserveSession } from "@/app/lib/actions";
-import { registerUser } from "@/app/services/api/auth/auth";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { SignupData } from "./types";
 import { initialData } from "./constants";
-import { toast } from "react-toastify";
+import { LoginData } from "./types";
+import { loginUser } from "@/app/services/api/auth/auth";
+import { preserveSession } from "@/app/lib/actions";
+import { useRouter } from "next/navigation";
 import AuthFormBottom from "@/app/components/Auth/AuthFormBottom/AuthFormBottom";
+import { toast } from "react-toastify";
 
-const SignUpPage = () => {
+const LoginPage = () => {
   const router = useRouter();
   const [data, setData] = useState(initialData);
-
-  const updateData = (key: keyof SignupData, value: string) => {
+  const updateData = (key: keyof LoginData, value: string) => {
     setData({ ...data, [key]: value });
   };
 
-  const handleSignup = () => {
-    registerUser(data).then((response) => {
+  const handleLogin = () => {
+    loginUser(data).then((response) => {
       if (response) {
         preserveSession(response).then(() => {
           router.push("/");
-          toast.success("Welcome to CONTACTS");
+          toast.success("Logged In Successfully");
         });
       }
     });
@@ -34,25 +33,11 @@ const SignUpPage = () => {
         className="bg-white border border-gray-200 rounded-xl w-[45%] mx-auto p-4"
         onSubmit={(e) => {
           e.preventDefault();
-          handleSignup();
+          handleLogin();
         }}
       >
-        <h1 className="text-3xl text-center">REGISTER ON CONTACTS</h1>
+        <h1 className="text-3xl text-center">LOGIN TO CONTACTS</h1>
         <section className="flex items-center flex-wrap mt-4 gap-4">
-          <Input
-            value={data.first_name}
-            placeHolder="First name"
-            className="basis-[calc(50%-0.5rem)]"
-            changeFunc={(e) => updateData("first_name", e.target.value)}
-            required
-          />
-          <Input
-            value={data.last_name}
-            placeHolder="Last name"
-            className="basis-[calc(50%-0.5rem)]"
-            changeFunc={(e) => updateData("last_name", e.target.value)}
-            required
-          />
           <Input
             value={data.email}
             placeHolder="Email address"
@@ -65,33 +50,25 @@ const SignUpPage = () => {
             value={data.password}
             placeHolder="Enter password"
             type="password"
-            className="basis-[calc(50%-0.5rem)]"
+            className="w-[100%]"
             changeFunc={(e) => updateData("password", e.target.value)}
-            required
-          />
-          <Input
-            value={data.password2}
-            placeHolder="Confirm password"
-            type="password"
-            className="basis-[calc(50%-0.5rem)]"
-            changeFunc={(e) => updateData("password2", e.target.value)}
             required
           />
           <button
             className="bg-purple-500 hover:bg-purple-700 transition-all duration-300 text-white w-full p-3 rounded-lg"
             type="submit"
           >
-            Sign up
+            Login
           </button>
         </section>
         <AuthFormBottom
-          question="Arealdy have an account?"
-          link_text="Log in"
-          route="/auth/login"
+          question="New to Contacts?"
+          link_text="Create Account"
+          route="/auth/signup"
         />
       </form>
     </main>
   );
 };
 
-export default SignUpPage;
+export default LoginPage;

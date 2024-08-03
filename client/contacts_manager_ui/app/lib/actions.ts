@@ -1,6 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import { LoginResponse, SignupResponse } from "../services/api/types";
+import { LoginResponse, SignupResponse } from "../services/api/auth/types";
 
 export const preserveSession = async (
   session_data: SignupResponse | LoginResponse
