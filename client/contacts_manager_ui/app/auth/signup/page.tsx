@@ -1,25 +1,15 @@
 "use client";
 import Input from "@/app/components/Input/Input";
-import { BASE_API } from "@/app/config";
+import { preserveSession } from "@/app/lib/actions";
 import { registerUser } from "@/app/services/api/auth";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-
-export type SignupData = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  password2: string;
-};
+import { SignupData } from "./types";
+import { initialData } from "./constants";
+import { toast } from "react-toastify";
 
 const SignUpPage = () => {
-  const initialData: SignupData = {
-    email: "",
-    first_name: "",
-    last_name: "",
-    password: "",
-    password2: "",
-  };
+  const router = useRouter();
   const [data, setData] = useState(initialData);
 
   const updateData = (key: keyof SignupData, value: string) => {
@@ -27,10 +17,13 @@ const SignUpPage = () => {
   };
 
   const handleLogin = () => {
-    console.log({ BASE_API });
-
     registerUser(data).then((response) => {
-      console.log({ response });
+      if (response) {
+        preserveSession(response).then(() => {
+          router.push("/");
+          toast.success("Welcome to CONTACTS");
+        });
+      }
     });
   };
 
