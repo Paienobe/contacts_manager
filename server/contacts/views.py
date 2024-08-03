@@ -16,8 +16,11 @@ class CreateContactView(generics.CreateAPIView):
 
 
 class ListContactsView(generics.ListAPIView):
-    queryset = Contact.objects.all()
     serializer_class = ContactSerializer
+
+    def get_queryset(self):
+        queryset = Contact.objects.filter(created_by=self.request.user)
+        return queryset
 
 
 class EditContactView(generics.UpdateAPIView):
