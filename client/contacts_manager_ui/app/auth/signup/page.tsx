@@ -22,7 +22,7 @@ const SignUpPage = () => {
       if (response) {
         preserveSession(response).then(() => {
           router.push("/");
-          toast.success("Welcome to CONTACTS");
+          toast.success(`Welcome to CONTACTS ${data.first_name}`);
         });
       }
     });

@@ -31,9 +31,9 @@ const authErrHandler = (error: any) => {
   const allErrors = errorKeys.map((key) => {
     const errorMessage = errorData[key];
     if (Array.isArray(errorMessage)) {
-      return `${key == "non_field_errors" ? "" : key + ":"} ${errorMessage[0]}`;
+      return errorMessage[0];
     }
-    return `${key == "non_field_errors" ? "" : key + ":"} ${errorMessage}`;
+    return errorMessage;
   });
   return allErrors;
 };
