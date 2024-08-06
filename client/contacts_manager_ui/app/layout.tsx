@@ -3,6 +3,7 @@ import { Sora } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { GlobalContextProvider } from "./context/global/GlobalContext";
 
 const sora = Sora({ subsets: ["latin"] });
 
@@ -19,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sora.className}>
-        {children}
-        <ToastContainer />
+        <GlobalContextProvider>
+          {children}
+          <ToastContainer />
+        </GlobalContextProvider>
       </body>
     </html>
   );

@@ -1,6 +1,10 @@
 "use server";
 import { cookies } from "next/headers";
-import { LoginResponse, SignupResponse } from "../services/api/auth/types";
+import {
+  LoginResponse,
+  SignupResponse,
+  User,
+} from "../services/api/auth/types";
 
 export const preserveSession = async (
   session_data: SignupResponse | LoginResponse
@@ -17,7 +21,7 @@ export const preserveSession = async (
     maxAge: 60 * 60, // 60 minutes,
     path: "/",
   });
-  cookies().set("contact_manager_refresh_token", session_data.access_token, {
+  cookies().set("contact_manager_refresh_token", session_data.refresh_token, {
     httpOnly: true,
     secure: process.env.NODE_ENV == "production",
     maxAge: 60 * 60 * 24 * 7, // 1 week,
@@ -31,11 +35,16 @@ export const clearSession = async () => {
   cookies().set("contact_manager_refresh_token", "");
 };
 
-type TokenType =
+export type TokenType =
   | "contact_manager_access_token"
   | "contact_manager_refresh_token";
 
 export const getToken = async (token: TokenType) => {
   const myToken = cookies().get(token)?.value;
   return myToken ? myToken : null;
+};
+
+export const getUser = async () => {
+  const user = cookies().get("contact_manager_user")?.value;
+  return user ? (JSON.parse(user) as User) : null;
 };

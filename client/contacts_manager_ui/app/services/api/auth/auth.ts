@@ -25,6 +25,17 @@ export const loginUser = async (data: LoginData) => {
   }
 };
 
+export const refreshUserToken = async (token: string) => {
+  try {
+    const request = await authInstance.post("/refresh_token/", {
+      refresh: token,
+    });
+    return request.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const authErrHandler = (error: any) => {
   const errorData = error.response.data;
   const errorKeys = Object.keys(errorData);

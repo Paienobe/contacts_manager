@@ -7,3 +7,10 @@ export const authInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+export const contactsInstance = axios.create({
+  baseURL: `${BASE_API}/contacts`,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});

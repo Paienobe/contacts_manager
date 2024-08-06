@@ -8,9 +8,11 @@ import { SignupData } from "./types";
 import { initialData } from "./constants";
 import { toast } from "react-toastify";
 import AuthFormBottom from "@/app/components/Auth/AuthFormBottom/AuthFormBottom";
+import { useGlobalContext } from "@/app/context/global/GlobalContext";
 
 const SignUpPage = () => {
   const router = useRouter();
+  const { setUser } = useGlobalContext();
   const [data, setData] = useState(initialData);
 
   const updateData = (key: keyof SignupData, value: string) => {
@@ -21,6 +23,7 @@ const SignUpPage = () => {
     registerUser(data).then((response) => {
       if (response) {
         preserveSession(response).then(() => {
+          setUser(response.user);
           router.push("/");
           toast.success(`Welcome to CONTACTS ${data.first_name}`);
         });

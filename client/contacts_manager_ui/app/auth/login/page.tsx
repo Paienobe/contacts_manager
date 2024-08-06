@@ -8,9 +8,11 @@ import { preserveSession } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
 import AuthFormBottom from "@/app/components/Auth/AuthFormBottom/AuthFormBottom";
 import { toast } from "react-toastify";
+import { useGlobalContext } from "@/app/context/global/GlobalContext";
 
 const LoginPage = () => {
   const router = useRouter();
+  const { setUser } = useGlobalContext();
   const [data, setData] = useState(initialData);
   const updateData = (key: keyof LoginData, value: string) => {
     setData({ ...data, [key]: value });
@@ -20,6 +22,7 @@ const LoginPage = () => {
     loginUser(data).then((response) => {
       if (response) {
         preserveSession(response).then(() => {
+          setUser(response.user);
           router.push("/");
           toast.success("Logged In Successfully");
         });
